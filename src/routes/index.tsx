@@ -1,24 +1,70 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { config } from "@/lib/birthday-config";
+import { PasswordGate } from "@/components/birthday/PasswordGate";
+import { Landing } from "@/components/birthday/Landing";
+import { CakeScene } from "@/components/birthday/CakeScene";
+import { PhotoMemories } from "@/components/birthday/PhotoMemories";
+import { Videos } from "@/components/birthday/Videos";
+import { Timeline } from "@/components/birthday/Timeline";
+import { Letter } from "@/components/birthday/Letter";
+import { Gallery } from "@/components/birthday/Gallery";
+import { PolaroidWall } from "@/components/birthday/PolaroidWall";
+import { Reasons } from "@/components/birthday/Reasons";
+import { Ending } from "@/components/birthday/Ending";
+import { MusicButton } from "@/components/birthday/MusicButton";
+import { CursorGlow } from "@/components/birthday/CursorGlow";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
+export const Route = createFileRoute("/")({ component: Index });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+type Phase = "gate" | "landing" | "cake" | "story";
+
 function Index() {
+  const [phase, setPhase] = useState<Phase>(config.password ? "gate" : "landing");
+  const storyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (phase === "story" && storyRef.current) {
+      storyRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [phase]);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="relative min-h-[100dvh]">
+      <CursorGlow />
+
+      <AnimatePresence mode="wait">
+        {phase === "gate" && (
+          <motion.div key="gate" exit={{ opacity: 0 }}>
+            <PasswordGate password={config.password} onUnlock={() => setPhase("landing")} />
+          </motion.div>
+        )}
+
+        {phase === "landing" && (
+          <motion.div key="landing" exit={{ opacity: 0, y: -30 }} transition={{ duration: 0.6 }}>
+            <Landing name={config.name} message={config.landingMessage} onOpen={() => setPhase("cake")} />
+          </motion.div>
+        )}
+
+        {(phase === "cake" || phase === "story") && (
+          <motion.div key="rest" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
+            <MusicButton src={config.musicFile} autoStart={phase === "cake" || phase === "story"} />
+            <CakeScene onDone={() => setPhase("story")} />
+
+            <div ref={storyRef}>
+              <PhotoMemories photos={config.photos} />
+              <Videos videos={config.videos} />
+              <Timeline items={config.timeline} />
+              <Letter text={config.letter} />
+              <Gallery images={config.gallery} />
+              <PolaroidWall images={config.polaroids} />
+              <Reasons items={config.reasons} />
+              <Ending message={config.endingMessage} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </main>
   );
 }
