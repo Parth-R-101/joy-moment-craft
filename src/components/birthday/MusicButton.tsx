@@ -32,20 +32,31 @@ export function MusicButton({ src, autoStart }: { src: string; autoStart: boolea
       <motion.button
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
         onClick={toggle}
         aria-label={playing ? "Pause music" : "Play music"}
-        className="glass fixed bottom-5 right-5 z-40 grid h-12 w-12 place-items-center rounded-full"
-        style={{ boxShadow: "0 10px 30px -8px oklch(0.6 0.14 65 / 0.4)" }}
+        className="glass fixed bottom-5 right-5 z-40 grid h-13 w-13 place-items-center rounded-full sm:bottom-6 sm:right-6"
+        style={{
+          width: "3.25rem",
+          height: "3.25rem",
+          boxShadow: playing
+            ? "0 12px 32px -8px rgba(217, 165, 165, 0.45), 0 0 24px rgba(232, 215, 165, 0.3)"
+            : "0 10px 28px -8px rgba(217, 165, 165, 0.3)",
+        }}
       >
-        {playing ? <Pause className="h-5 w-5 text-foreground" /> : <Music className="h-5 w-5 text-foreground" />}
+        {playing ? (
+          <Pause className="h-5 w-5 text-rose-gold" />
+        ) : (
+          <Music className="h-5 w-5 text-rose-gold" />
+        )}
         {playing && (
           <span
             className="pointer-events-none absolute inset-0 rounded-full"
             style={{
-              boxShadow: "0 0 0 2px oklch(0.78 0.14 75 / 0.5)",
-              animation: "pulse 2s ease-out infinite",
+              boxShadow: "0 0 0 2px rgba(217, 165, 165, 0.45)",
+              animation: "soft-pulse 2.2s ease-out infinite",
             }}
           />
         )}

@@ -6,7 +6,10 @@ export function CursorGlow() {
 
   useEffect(() => {
     const isTouch = matchMedia("(hover: none)").matches;
-    if (isTouch) { setTouch(true); return; }
+    if (isTouch) {
+      setTouch(true);
+      return;
+    }
     const onMove = (e: MouseEvent) => setPos({ x: e.clientX, y: e.clientY });
     window.addEventListener("mousemove", onMove);
     return () => window.removeEventListener("mousemove", onMove);
@@ -16,12 +19,13 @@ export function CursorGlow() {
 
   return (
     <div
-      className="pointer-events-none fixed z-[60] h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full mix-blend-multiply transition-transform duration-300 ease-out"
+      className="pointer-events-none fixed z-[60] h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full mix-blend-multiply transition-transform duration-300 ease-out"
       style={{
         left: pos.x,
         top: pos.y,
-        background: "radial-gradient(circle, oklch(0.9 0.12 80 / 0.35), transparent 65%)",
-        filter: "blur(20px)",
+        background:
+          "radial-gradient(circle, rgba(248, 232, 238, 0.45) 0%, rgba(237, 231, 246, 0.25) 40%, transparent 65%)",
+        filter: "blur(24px)",
       }}
     />
   );

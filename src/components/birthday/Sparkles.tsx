@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 
+const SPARKLE_PALETTE = ["#E8D7A5", "#D9A5A5", "#F8E8EE", "#FFFDF8"];
+
 export function Sparkles({ count = 20, className = "" }: { count?: number; className?: string }) {
   const bits = useMemo(
     () =>
@@ -11,6 +13,7 @@ export function Sparkles({ count = 20, className = "" }: { count?: number; class
         size: 2 + Math.random() * 5,
         delay: Math.random() * 3,
         duration: 3 + Math.random() * 4,
+        color: SPARKLE_PALETTE[i % SPARKLE_PALETTE.length],
       })),
     [count],
   );
@@ -25,10 +28,10 @@ export function Sparkles({ count = 20, className = "" }: { count?: number; class
             top: `${b.y}%`,
             width: b.size,
             height: b.size,
-            background: "radial-gradient(circle, oklch(0.95 0.12 85) 0%, transparent 70%)",
-            boxShadow: "0 0 8px oklch(0.85 0.15 80 / 0.8)",
+            background: `radial-gradient(circle, ${b.color} 0%, transparent 70%)`,
+            boxShadow: `0 0 10px ${b.color}99, 0 0 20px rgba(237, 231, 246, 0.4)`,
           }}
-          animate={{ opacity: [0, 1, 0], scale: [0.5, 1.2, 0.5], y: [0, -20, 0] }}
+          animate={{ opacity: [0, 1, 0], scale: [0.5, 1.3, 0.5], y: [0, -24, 0] }}
           transition={{ duration: b.duration, delay: b.delay, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}

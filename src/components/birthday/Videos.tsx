@@ -2,15 +2,20 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { SectionTitle } from "./PhotoMemories";
 import { Volume2, VolumeX } from "lucide-react";
+import { DecorativeLayer } from "./Decorations";
+import { config } from "@/lib/birthday-config";
 
 export function Videos({ videos }: { videos: { src: string; caption: string }[] }) {
   return (
-    <section className="mx-auto w-full max-w-md px-4 py-16">
-      <SectionTitle overline="reels" title="Little Moments" />
-      <div className="mt-8 flex flex-col gap-10">
-        {videos.map((v, i) => (
-          <VideoCard key={i} src={v.src} caption={v.caption} />
-        ))}
+    <section className="section-padding relative overflow-hidden">
+      <DecorativeLayer density="subtle" showFairyLights showStars showSparkles showBalloons showHearts className="z-0" />
+      <div className="relative z-10">
+        <SectionTitle overline={config.sections.videos.overline} title={config.sections.videos.title} />
+        <div className="mt-10 flex flex-col gap-12 sm:mt-12 sm:gap-14">
+          {config.videos.map((v, i) => (
+            <VideoCard key={i} src={v.src} caption={v.caption} />
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -38,11 +43,11 @@ function VideoCard({ src, caption }: { src: string; caption: string }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 48 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.7 }}
-      className="glass relative overflow-hidden rounded-3xl"
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+      className="glass relative overflow-hidden rounded-[1.75rem] glow-soft"
     >
       <div className="relative aspect-[9/16] w-full bg-black">
         <video
@@ -55,17 +60,19 @@ function VideoCard({ src, caption }: { src: string; caption: string }) {
           className="h-full w-full object-cover"
         />
         {visible && (
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#4a3f47]/50 via-transparent to-[#f8e8ee]/10" />
         )}
         <button
           onClick={() => setMuted((m) => !m)}
-          className="absolute right-3 top-3 rounded-full bg-black/40 p-2 text-white backdrop-blur-md transition hover:bg-black/60"
+          className="glass absolute right-4 top-4 rounded-full p-2.5 text-foreground transition hover:scale-105"
           aria-label={muted ? "Unmute" : "Mute"}
         >
           {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
         </button>
       </div>
-      <p className="p-4 text-center text-sm text-muted-foreground">{caption}</p>
+      <p className="border-t border-rose-gold/10 px-6 py-5 text-center text-sm leading-relaxed text-muted-foreground">
+        {caption}
+      </p>
     </motion.div>
   );
 }

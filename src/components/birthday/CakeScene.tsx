@@ -1,13 +1,17 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
+import { DecorativeLayer } from "./Decorations";
+
+const CONFETTI_COLORS = ["#E8D7A5", "#D9A5A5", "#F8E8EE", "#FFFDF8", "#EDE7F6"];
+const BALLOON_COLORS = ["#F8E8EE", "#E8D7A5", "#D9A5A5", "#EDE7F6", "#F9F3EA"];
 
 export function CakeScene({ onDone }: { onDone: () => void }) {
   const [lit, setLit] = useState([false, false, false]);
-  const [taps, setTaps] = useState(0);
-  const [easterEgg, setEasterEgg] = useState(false);
+  const [isBlowing, setIsBlowing] = useState(false);
+  const [showSmoke, setShowSmoke] = useState(false);
+  const [celebration, setCelebration] = useState(false);
 
-  // Auto-light candles one by one
   useEffect(() => {
     const timers = [0, 1, 2].map((i) =>
       setTimeout(() => setLit((s) => s.map((v, idx) => (idx === i ? true : v))), 600 + i * 500),
@@ -15,141 +19,205 @@ export function CakeScene({ onDone }: { onDone: () => void }) {
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  const allOut = lit.every((v) => v === false) && taps > 0;
+  const allOut = lit.every((v) => v === false) && isBlowing;
 
   useEffect(() => {
-    if (allOut) {
-      // fireworks
+    if (!allOut) return;
+
+    setTimeout(() => setShowSmoke(false), 2200);
+
+    const launchCelebration = () => {
+      setCelebration(true);
+      confetti({ particleCount: 90, spread: 92, origin: { y: 0.55 }, colors: CONFETTI_COLORS, scalar: 0.92 });
+      confetti({ particleCount: 40, angle: 120, spread: 50, origin: { x: 0.1, y: 0.45 }, colors: CONFETTI_COLORS, scalar: 0.75 });
+      confetti({ particleCount: 40, angle: 60, spread: 50, origin: { x: 0.9, y: 0.45 }, colors: CONFETTI_COLORS, scalar: 0.75 });
+
       const end = Date.now() + 1400;
       const frame = () => {
-        confetti({ particleCount: 6, angle: 60, spread: 70, origin: { x: 0 }, colors: ["#f6c56b", "#f4e3c4", "#ffb4a2"] });
-        confetti({ particleCount: 6, angle: 120, spread: 70, origin: { x: 1 }, colors: ["#f6c56b", "#f4e3c4", "#ffb4a2"] });
+        confetti({ particleCount: 5, angle: 70, spread: 40, origin: { x: 0.2, y: 0.25 }, colors: CONFETTI_COLORS, scalar: 0.6 });
+        confetti({ particleCount: 5, angle: 110, spread: 40, origin: { x: 0.8, y: 0.25 }, colors: CONFETTI_COLORS, scalar: 0.6 });
         if (Date.now() < end) requestAnimationFrame(frame);
       };
       frame();
-      confetti({ particleCount: 160, spread: 100, origin: { y: 0.6 }, colors: ["#f6c56b", "#f4e3c4", "#fff2d1", "#ffb4a2"] });
-      const t = setTimeout(onDone, 2400);
-      return () => clearTimeout(t);
-    }
+    };
+
+    const celebrationTimer = setTimeout(launchCelebration, 900);
+    const doneTimer = setTimeout(onDone, 3600);
+    return () => {
+      clearTimeout(celebrationTimer);
+      clearTimeout(doneTimer);
+    };
   }, [allOut, onDone]);
 
-  const blowCandle = (idx: number) => {
-    setLit((s) => s.map((v, i) => (i === idx ? false : v)));
-    confetti({ particleCount: 30, spread: 50, origin: { y: 0.45 }, colors: ["#fff2d1", "#f6c56b"] });
-  };
+  const blowOutCandles = () => {
+    if (isBlowing || allOut) return;
+    setIsBlowing(true);
+    setShowSmoke(true);
+    setCelebration(true);
 
-  const tapCake = () => {
-    setTaps((t) => {
-      const nt = t + 1;
-      if (nt >= 5 && !easterEgg) setEasterEgg(true);
-      return nt;
+    [0, 1, 2].forEach((idx) => {
+      setTimeout(
+        () => setLit((s) => s.map((v, i) => (i === idx ? false : v))),
+        900 + idx * 520,
+      );
     });
-    confetti({ particleCount: 20, spread: 60, origin: { y: 0.7 }, scalar: 0.7 });
   };
 
   return (
-    <section className="relative flex min-h-[100dvh] flex-col items-center justify-center px-6 text-center">
+    <section className="relative flex min-h-[100dvh] flex-col items-center justify-center px-6 py-12 text-center sm:px-8">
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(500px 400px at 50% 30%, rgba(248, 232, 238, 0.45), transparent 70%), radial-gradient(400px 350px at 80% 70%, rgba(237, 231, 246, 0.3), transparent 65%)",
+        }}
+      />
+
+      <DecorativeLayer
+        density="soft"
+        showBalloons={celebration}
+        showHearts={celebration}
+        showPetals
+        showSparkles
+        showFairyLights
+        showStars
+        className="z-0"
+      />
+
       <motion.p
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="font-display text-2xl italic text-muted-foreground"
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 font-display text-2xl italic text-muted-foreground sm:text-3xl"
       >
         Make a wish...
       </motion.p>
-      <p className="mt-1 text-xs text-muted-foreground">tap the candles to blow them out</p>
+      <p className="relative z-10 mt-2 text-xs tracking-wide text-muted-foreground sm:text-sm">
+        Press the elegant button below and watch the candles glow one last time.
+      </p>
 
-      {/* Floating balloons */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {["#ffb4a2", "#f6c56b", "#f4e3c4", "#e8c3b9", "#f8e0b0"].map((c, i) => (
+        {BALLOON_COLORS.map((c, i) => (
           <motion.div
             key={i}
-            className="absolute h-16 w-12 rounded-full"
+            className="absolute h-16 w-12 rounded-full sm:h-[4.5rem] sm:w-14"
             style={{
               left: `${8 + i * 20}%`,
               bottom: -80,
-              background: `radial-gradient(circle at 35% 30%, oklch(1 0 0 / 0.7), ${c})`,
-              boxShadow: "0 8px 20px oklch(0.5 0.05 60 / 0.15)",
+              background: `radial-gradient(circle at 35% 30%, rgba(255, 253, 248, 0.75), ${c})`,
+              boxShadow: "0 10px 28px rgba(217, 165, 165, 0.2), 0 0 20px rgba(232, 215, 165, 0.15)",
             }}
             animate={{ y: [-100, -900], x: [0, 10, -10, 0] }}
             transition={{ duration: 10 + i * 2, repeat: Infinity, delay: i * 1.5, ease: "easeInOut" }}
           >
-            <div className="absolute left-1/2 top-full h-16 w-px -translate-x-1/2 bg-foreground/20" />
+            <div className="absolute left-1/2 top-full h-16 w-px -translate-x-1/2 bg-rose-gold/25" />
           </motion.div>
         ))}
       </div>
 
-      {/* Cake */}
       <motion.div
-        onClick={tapCake}
-        initial={{ scale: 0.7, opacity: 0, y: 30 }}
+        initial={{ scale: 0.7, opacity: 0, y: 36 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 120, damping: 14 }}
-        className="relative z-10 mt-10 flex cursor-pointer flex-col items-center select-none"
+        transition={{ type: "spring", stiffness: 110, damping: 14 }}
+        className="relative z-10 mt-12 flex flex-col items-center sm:mt-14"
       >
-        {/* Candles */}
-        <div className="mb-2 flex gap-6">
+        <div className="mb-4 flex gap-6 sm:gap-8">
           {lit.map((on, i) => (
-            <button
-              key={i}
-              onClick={(e) => { e.stopPropagation(); if (on) blowCandle(i); }}
-              className="relative flex flex-col items-center"
-              aria-label={`Candle ${i + 1}`}
-            >
-              <AnimatePresence>
-                {on && (
-                  <motion.span
-                    key="flame"
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: [1, 1.15, 1], opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0, y: -10 }}
-                    transition={{ duration: 0.6, repeat: Infinity, repeatType: "mirror" }}
-                    className="h-5 w-3 rounded-full"
-                    style={{
-                      background: "radial-gradient(circle at 50% 60%, #fff2c1 0%, #ffb84d 45%, #ff7043 90%)",
-                      filter: "drop-shadow(0 0 12px #ffb84d)",
-                    }}
-                  />
-                )}
-              </AnimatePresence>
-              <div className="mt-1 h-10 w-2 rounded-sm" style={{ background: i === 1 ? "#e8c3b9" : "#f6c56b" }} />
-            </button>
+            <div key={i} className="relative flex flex-col items-center">
+              {on ? (
+                <motion.span
+                  className="h-5 w-3 rounded-full"
+                  style={{
+                    background: "radial-gradient(circle at 50% 60%, #FFFDF8 0%, #E8D7A5 45%, #D9A5A5 90%)",
+                    filter: "drop-shadow(0 0 18px rgba(232, 215, 165, 0.9))",
+                  }}
+                  animate={{
+                    opacity: [0.8, 1, 0.8],
+                    y: [0, -4, 0],
+                    rotate: [-2, 2, -2],
+                  }}
+                  transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                />
+              ) : (
+                <motion.span
+                  className="h-2.5 w-2.5 rounded-full bg-[#E8D7A5]"
+                  animate={{ opacity: [0.5, 0.2, 0.5], scale: [1, 0.85, 1] }}
+                  transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
+                />
+              )}
+              <div className="mt-1 h-10 w-2 rounded-sm" style={{ background: i === 1 ? "#D9A5A5" : "#E8D7A5" }} />
+
+              {showSmoke && !on && (
+                <motion.span
+                  className="absolute left-1/2 top-0 h-8 w-8 -translate-x-1/2 rounded-full bg-white/70"
+                  initial={{ opacity: 0, y: 0, scale: 0.8 }}
+                  animate={{ opacity: [0, 0.45, 0], y: [-8, -32, -60], scale: [0.8, 1.1, 1.4] }}
+                  transition={{ duration: 2, ease: "easeOut" }}
+                />
+              )}
+            </div>
           ))}
         </div>
 
-        {/* Cake tiers */}
         <div className="relative">
-          <div className="mx-auto h-16 w-40 rounded-t-3xl"
-            style={{ background: "linear-gradient(180deg, #fff4e0, #f2d9a8)", boxShadow: "inset 0 -6px 0 #e8c78a" }} />
-          <div className="mx-auto -mt-2 h-3 w-40 rounded-full"
-            style={{ background: "repeating-linear-gradient(90deg, #f8b4a2 0 8px, transparent 8px 16px)" }} />
-          <div className="mx-auto h-20 w-56 rounded-t-3xl"
-            style={{ background: "linear-gradient(180deg, #ffe6c2, #eec489)", boxShadow: "inset 0 -8px 0 #d9a35f" }} />
-          <div className="mx-auto -mt-2 h-4 w-56 rounded-full"
-            style={{ background: "repeating-linear-gradient(90deg, #ffb4a2 0 10px, transparent 10px 20px)" }} />
-          <div className="mx-auto h-6 w-64 rounded-b-2xl"
-            style={{ background: "linear-gradient(180deg, #f7d9a1, #c88a4a)" }} />
-          <div className="mx-auto -mt-1 h-3 w-64 rounded-full opacity-40 blur-md" style={{ background: "#000" }} />
+          <motion.div
+            className="mx-auto h-16 w-40 rounded-t-3xl sm:w-44"
+            style={{
+              background: "linear-gradient(180deg, #FFFDF8, #F8E8EE)",
+              boxShadow: "inset 0 -6px 0 rgba(217, 165, 165, 0.35), 0 8px 24px rgba(217, 165, 165, 0.15)",
+            }}
+            animate={allOut ? { boxShadow: "inset 0 -6px 0 rgba(217, 165, 165, 0.35), 0 16px 44px rgba(217, 165, 165, 0.25)" } : {}}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          />
+          <div
+            className="mx-auto -mt-2 h-3 w-40 rounded-full sm:w-44"
+            style={{
+              background: "repeating-linear-gradient(90deg, #D9A5A5 0 8px, transparent 8px 16px)",
+            }}
+          />
+          <motion.div
+            className="mx-auto -mt-2 h-20 w-56 rounded-t-3xl sm:w-60"
+            style={{
+              background: "linear-gradient(180deg, #F9F3EA, #E8D7A5)",
+            }}
+            animate={allOut ? { boxShadow: "inset 0 -8px 0 rgba(217, 165, 165, 0.4), 0 20px 60px rgba(232, 215, 165, 0.24)" } : {}}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          />
+          <div
+            className="mx-auto -mt-2 h-4 w-56 rounded-full sm:w-60"
+            style={{
+              background: "repeating-linear-gradient(90deg, #F8E8EE 0 10px, transparent 10px 20px)",
+            }}
+          />
+          <motion.div
+            className="mx-auto h-6 w-64 rounded-b-2xl sm:w-72"
+            style={{ background: "linear-gradient(180deg, #E8D7A5, #D9A5A5)" }}
+            animate={allOut ? { scale: [1, 1.02, 1] } : {}}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          />
+          <div
+            className="mx-auto -mt-1 h-3 w-64 rounded-full opacity-30 blur-md sm:w-72"
+            style={{ background: "#D9A5A5" }}
+          />
         </div>
       </motion.div>
 
-      <AnimatePresence>
-        {easterEgg && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="glass mt-6 rounded-2xl px-4 py-2 text-xs italic text-muted-foreground"
-          >
-            🐣 You found the easter egg — you deserve extra cake.
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.button
+        onClick={blowOutCandles}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.97 }}
+        disabled={isBlowing || allOut}
+        className="btn-gold btn-gold-hover relative z-10 mt-8 rounded-full px-9 py-4 text-sm font-semibold tracking-wide disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {allOut ? "Candles are out" : isBlowing ? "Blowing out..." : "Blow Out Candles"}
+      </motion.button>
 
       {allOut && (
         <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-gold mt-8 font-display text-2xl"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="text-gold mt-8 font-display text-2xl sm:text-3xl"
         >
           Wish made ✨
         </motion.p>

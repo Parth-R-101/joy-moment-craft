@@ -7,11 +7,9 @@ import { Landing } from "@/components/birthday/Landing";
 import { CakeScene } from "@/components/birthday/CakeScene";
 import { PhotoMemories } from "@/components/birthday/PhotoMemories";
 import { Videos } from "@/components/birthday/Videos";
-import { Timeline } from "@/components/birthday/Timeline";
 import { Letter } from "@/components/birthday/Letter";
 import { Gallery } from "@/components/birthday/Gallery";
 import { PolaroidWall } from "@/components/birthday/PolaroidWall";
-import { Reasons } from "@/components/birthday/Reasons";
 import { Ending } from "@/components/birthday/Ending";
 import { MusicButton } from "@/components/birthday/MusicButton";
 import { CursorGlow } from "@/components/birthday/CursorGlow";
@@ -43,7 +41,7 @@ function Index() {
 
         {phase === "landing" && (
           <motion.div key="landing" exit={{ opacity: 0, y: -30 }} transition={{ duration: 0.6 }}>
-            <Landing name={config.name} message={config.landingMessage} onOpen={() => setPhase("cake")} />
+            <Landing name={config.name} message={config.landingMessage} onOpen={() => setPhase("cake")} copy={config.opening} />
           </motion.div>
         )}
 
@@ -55,11 +53,9 @@ function Index() {
             <div ref={storyRef}>
               <PhotoMemories photos={config.photos} />
               <Videos videos={config.videos} />
-              <Timeline items={config.timeline} />
               <Letter text={config.letter} />
               <Gallery images={config.gallery} />
               <PolaroidWall images={config.polaroids} />
-              <Reasons items={config.reasons} />
               <Ending message={config.endingMessage} />
             </div>
           </motion.div>
