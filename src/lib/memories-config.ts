@@ -80,14 +80,14 @@ export const memoriesConfig: BirthdayConfig = {
     scrollHint: "scroll gently ↓",
   },
   photos: [
-    { src: "/photos/1.jpg", title: "Our First Photo", caption: "Where it all began.", date: "Jan 2020" },
-    { src: "/photos/2.jpg", title: "Sunset Walks", caption: "Golden hours with you.", date: "Jun 2021" },
-    { src: "/photos/3.jpg", title: "Late Night Talks", caption: "Endless laughter.", date: "Sep 2022" },
-    { src: "/photos/4.jpg", title: "Little Adventures", caption: "Every day is a memory.", date: "May 2023" },
+    { src: "/photos/photo1.jpeg", title: "", caption: "", date: "" },
+    { src: "/photos/photo2.jpeg", title: "", caption: "", date: "" },
+    { src: "/photos/photo3.jpeg", title: "", caption: "Endless laughter.", date: "Sep 2022" },
+    { src: "/photos/photo4.jpeg", title: "", caption: "", date: "" },
   ],
   videos: [
-    { src: "/videos/1.mp4", caption: "That one dance 💃" },
-    { src: "/videos/2.mp4", caption: "You being iconic ✨" },
+    { src: "/videos/video1.mp4", caption: "That one dance 💃" },
+    { src: "/videos/video2.mp4", caption: "You being iconic ✨" },
   ],
   letter: `Dear friend,
 
