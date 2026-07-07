@@ -82,7 +82,7 @@ export const memoriesConfig: BirthdayConfig = {
   photos: [
     { src: "/photos/photo1.jpeg", title: "", caption: "", date: "" },
     { src: "/photos/photo2.jpeg", title: "", caption: "", date: "" },
-    { src: "/photos/photo3.jpeg", title: "", caption: "Endless laughter.", date: "Sep 2022" },
+    { src: "/photos/photo3.jpeg", title: "", caption: "Endless laughter.", date: "" },
     { src: "/photos/photo4.jpeg", title: "", caption: "", date: "" },
   ],
   videos: [
@@ -90,30 +90,25 @@ export const memoriesConfig: BirthdayConfig = {
     { src: "/videos/video2.mp4", caption: "You being iconic ✨" },
   ],
   letter: `Dear friend,
-
-Today is your day, and I wanted to give you something a little different.
-Not a gift wrapped in paper, but wrapped in every memory we've made together.
-
-You are the kind of person the world becomes softer around.
-Thank you for your laugh, your patience, your loyalty, and your light.
-
-Happy Birthday. Here's to another year of us.
-
-— With love, always.`,
+Happy Birthday, Riya! ❤️
+13 years... that's almost a lifetime of memories, and I honestly can't imagine my life without you in it. From being silly kids to growing up together, you've been my constant through every phase. Thank you for always being there—for the laughs, the random gossip, the endless support, and for making even ordinary days feel special.I'm so grateful that I got a best friend like you. No matter where life takes us, I hope we always stay this close. You deserve all the happiness, love, success, and everything beautiful this world has to offer.
+Here's to many more birthdays, countless memories, and growing old while still behaving like the same crazy best friends we've always been. 😂❤️
+I love you so much. Happy Birthday once again, Riya! Have the most amazing day—you deserve nothing less. 🫂🎂✨
+Also please develop a good taste in men! `,
   gallery: [
-    { src: "/gallery/1.jpg", alt: "A cherished memory", caption: "A cherished memory" },
-    { src: "/gallery/2.jpg", alt: "A bright little moment", caption: "A bright little moment" },
-    { src: "/gallery/3.jpg", alt: "A soft sunset scene", caption: "A soft sunset scene" },
-    { src: "/gallery/4.jpg", alt: "A favorite laugh", caption: "A favorite laugh" },
-    { src: "/gallery/5.jpg", alt: "A timeless keepsake", caption: "A timeless keepsake" },
+    { src: "/gallery/gallery1.jpeg", alt: "A cherished memory", caption: "A cherished memory" },
+    { src: "/gallery/gallery2.jpeg", alt: "A bright little moment", caption: "" },
+    { src: "/gallery/gallery3.jpeg", alt: "A soft sunset scene", caption: "" },
+    // { src: "/gallery/4.jpg", alt: "A favorite laugh", caption: "A favorite laugh" },
+    // { src: "/gallery/5.jpg", alt: "A timeless keepsake", caption: "A timeless keepsake" },
   ],
   polaroids: [
-    { src: "/polaroids/1.jpg", label: "memory 01", caption: "One of the sweetest moments" },
-    { src: "/polaroids/2.jpg", label: "memory 02", caption: "A little sparkle in the everyday" },
-    { src: "/polaroids/3.jpg", label: "memory 03", caption: "A reminder of our favorite laughter" },
-    { src: "/polaroids/4.jpg", label: "memory 04", caption: "A quiet, beautiful chapter" },
-    { src: "/polaroids/5.jpg", label: "memory 05", caption: "A soft glow of friendship" },
-    { src: "/polaroids/6.jpg", label: "memory 06", caption: "Something I never want to lose" },
+    { src: "/polaroids/polaroids1.jpeg", label: "memory 01", caption: "" },
+    { src: "/polaroids/polaroids2.jpeg", label: "memory 02", caption: "" },
+    { src: "/polaroids/polaroids3.jpeg", label: "memory 03", caption: "" },
+    { src: "/polaroids/polaroids4.jpeg", label: "memory 04", caption: "" },
+    // { src: "/polaroids/5.jpg", label: "memory 05", caption: "" },
+    // { src: "/polaroids/6.jpg", label: "memory 06", caption: "" },
   ],
   endingMessage: "Thank you for being such an amazing friend ❤️",
   sections: {
