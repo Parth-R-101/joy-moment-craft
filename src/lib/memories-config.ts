@@ -68,8 +68,8 @@ export const memoriesConfig: BirthdayConfig = {
   landingMessage: "A little surprise made just for you...",
   musicFile: "/music/song.mp3",
   opening: {
-    introLine: "✨ Someone has prepared something special for you ✨",
-    message: "Today isn't just another day...",
+    introLine: "✨ Happy Birthday Riya✨",
+    message: "I hope u like the gift i made for u! it’s a lil something to celebrate today and all the memories we’ve shared. 💖. ",
     inputPlaceholder: "secret word",
     buttonLabel: "Open the gift",
     hint: "Hint: it’s about today ✨",
@@ -122,7 +122,7 @@ Happy Birthday. Here's to another year of us.
     letter: { overline: "from me to you", title: "A Letter" },
     gallery: { overline: "album", title: "Gallery" },
     polaroids: { overline: "scrapbook", title: "Polaroid Wall" },
-    ending: { overline: "the end", title: "Happy Birthday" },
+    ending: { overline: "the end", title: "Happy Birthday Riya💕" },
   },
 };
 

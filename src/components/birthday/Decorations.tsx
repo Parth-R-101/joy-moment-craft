@@ -12,11 +12,33 @@ type DecorativeLayerProps = {
   showButterflies?: boolean;
   showStars?: boolean;
   showRibbons?: boolean;
+  showSunflowers?: boolean;
   burstOnEnter?: boolean;
   className?: string;
 };
 
 const PALETTE = ["#E8D7A5", "#D9A5A5", "#F8E8EE", "#EDE7F6", "#FFFDF8"];
+
+export function SunflowerAccent({ className = "" }: { className?: string }) {
+  return (
+    <motion.div
+      className={`pointer-events-none absolute z-10 ${className}`}
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={{ opacity: [0.7, 0.95, 0.7], scale: [0.96, 1, 0.96], y: [0, -3, 0] }}
+      transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+      aria-hidden="true"
+    >
+      <svg width="48" height="48" viewBox="0 0 64 64" fill="none">
+        <path d="M32 10c-2 8-8 14-16 16 7 2 13 8 16 16 3-8 9-14 16-16-8-2-14-8-16-16Z" fill="#F5C95A" />
+        <path d="M32 10c-2 8-8 14-16 16 7 2 13 8 16 16 3-8 9-14 16-16-8-2-14-8-16-16Z" fill="#F7DF8D" opacity="0.7" />
+        <circle cx="32" cy="32" r="8" fill="#C27A20" />
+        <circle cx="32" cy="32" r="5" fill="#F7D96A" />
+        <path d="M32 40v18" stroke="#6D8F42" strokeWidth="2.2" strokeLinecap="round" />
+        <path d="M26 48c2-3 6-5 6-5s4 2 6 5" stroke="#6D8F42" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
+    </motion.div>
+  );
+}
 
 export function DecorativeLayer({
   density = "soft",
@@ -28,6 +50,7 @@ export function DecorativeLayer({
   showButterflies = false,
   showStars = false,
   showRibbons = false,
+  showSunflowers = false,
   burstOnEnter = false,
   className = "",
 }: DecorativeLayerProps) {
@@ -57,8 +80,10 @@ export function DecorativeLayer({
       ribbons: showRibbons ? base : 0,
       butterflies: showButterflies ? base : 0,
       fairyLights: showFairyLights ? 1 : 0,
+      sunflowers: showSunflowers ? (density === "rich" ? 3 : density === "soft" ? 2 : 1) : 0,
+      sunflowerPetals: showSunflowers ? (density === "rich" ? 3 : density === "soft" ? 2 : 1) : 0,
     };
-  }, [density, showBalloons, showHearts, showPetals, showSparkles, showStars, showRibbons, showButterflies, showFairyLights]);
+  }, [density, showBalloons, showHearts, showPetals, showSparkles, showStars, showRibbons, showButterflies, showFairyLights, showSunflowers]);
 
   const balloons = useMemo(
     () =>
@@ -101,6 +126,34 @@ export function DecorativeLayer({
         color: PALETTE[(id + 1) % PALETTE.length],
       })),
     [config.petals],
+  );
+
+  const sunflowers = useMemo(
+    () =>
+      Array.from({ length: config.sunflowers }, (_, id) => ({
+        id: `sunflower-${id}`,
+        left: 10 + Math.random() * 80,
+        top: 10 + Math.random() * 78,
+        size: 34 + Math.random() * 18,
+        delay: Math.random() * 3,
+        duration: 5 + Math.random() * 3,
+        rotate: -8 + Math.random() * 16,
+      })),
+    [config.sunflowers],
+  );
+
+  const sunflowerPetals = useMemo(
+    () =>
+      Array.from({ length: config.sunflowerPetals }, (_, id) => ({
+        id: `sunflower-petal-${id}`,
+        left: Math.random() * 100,
+        top: -8 - Math.random() * 16,
+        size: 8 + Math.random() * 6,
+        delay: Math.random() * 4,
+        duration: 12 + Math.random() * 4,
+        rotate: Math.random() * 360,
+      })),
+    [config.sunflowerPetals],
   );
 
   const sparkles = useMemo(
@@ -234,6 +287,35 @@ export function DecorativeLayer({
           animate={{ y: [0, 120, 140], x: [0, 10, -12, 0], rotate: [petal.rotate, petal.rotate + 180, petal.rotate + 360] }}
           transition={{ duration: petal.duration, delay: petal.delay, repeat: Infinity, ease: "easeInOut" }}
         />
+      ))}
+
+      {sunflowerPetals.map((petal) => (
+        <motion.div
+          key={petal.id}
+          className="absolute rounded-full"
+          style={{ left: `${petal.left}%`, top: `${petal.top}%`, width: petal.size, height: petal.size * 1.12, background: "linear-gradient(135deg, #f6d97d 0%, #e8b44b 55%, #a96d1f 100%)", opacity: 0.72, boxShadow: "0 0 10px rgba(232, 215, 165, 0.16)" }}
+          animate={{ y: [0, 120, 140], x: [0, 8, -10, 0], rotate: [petal.rotate, petal.rotate + 180, petal.rotate + 360] }}
+          transition={{ duration: petal.duration, delay: petal.delay, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ))}
+
+      {sunflowers.map((sunflower) => (
+        <motion.div
+          key={sunflower.id}
+          className="absolute"
+          style={{ left: `${sunflower.left}%`, top: `${sunflower.top}%`, rotate: sunflower.rotate, opacity: 0.85 }}
+          animate={{ y: [0, 6, 0], rotate: [sunflower.rotate - 2, sunflower.rotate + 2, sunflower.rotate], scale: [0.98, 1.01, 0.98] }}
+          transition={{ duration: sunflower.duration, delay: sunflower.delay, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <svg width={sunflower.size} height={sunflower.size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <path d="M32 12c-2 8-8 14-16 16 7 2 13 8 16 16 3-8 9-14 16-16-8-2-14-8-16-16Z" fill="#F4D48A" />
+            <path d="M32 12c-2 8-8 14-16 16 7 2 13 8 16 16 3-8 9-14 16-16-8-2-14-8-16-16Z" fill="#F8E8EE" opacity="0.55" />
+            <circle cx="32" cy="32" r="8" fill="#B87A3A" />
+            <circle cx="32" cy="32" r="5" fill="#F9E8B6" />
+            <path d="M32 40v18" stroke="#7D8F5C" strokeWidth="2.2" strokeLinecap="round" />
+            <path d="M26 48c2-3 6-5 6-5s4 2 6 5" stroke="#8DA16B" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+        </motion.div>
       ))}
 
       {sparkles.map((sparkle) => (

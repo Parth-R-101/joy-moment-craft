@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Sparkles } from "./Sparkles";
+import { DecorativeLayer, SunflowerAccent } from "./Decorations";
 import { config } from "@/lib/birthday-config";
 
 export function PasswordGate({ password, onUnlock }: { password: string; onUnlock: () => void }) {
@@ -29,6 +30,11 @@ export function PasswordGate({ password, onUnlock }: { password: string; onUnloc
         }}
       />
       <Sparkles count={32} />
+      <DecorativeLayer density="subtle" showSunflowers className="z-0" />
+      <SunflowerAccent className="left-2 top-3 h-10 w-10 opacity-70 sm:left-5 sm:top-5 sm:h-12 sm:w-12" />
+      <SunflowerAccent className="right-2 top-3 h-10 w-10 opacity-70 sm:right-5 sm:top-5 sm:h-12 sm:w-12" />
+      <SunflowerAccent className="bottom-3 left-2 h-9 w-9 opacity-70 sm:bottom-5 sm:left-5 sm:h-11 sm:w-11" />
+      <SunflowerAccent className="bottom-3 right-2 h-9 w-9 opacity-70 sm:bottom-5 sm:right-5 sm:h-11 sm:w-11" />
 
       <motion.form
         onSubmit={submit}
@@ -59,48 +65,52 @@ export function PasswordGate({ password, onUnlock }: { password: string; onUnloc
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.25, duration: 0.7, type: "spring", stiffness: 120, damping: 16 }}
-                className="mx-auto mt-5 flex h-48 w-48 items-center justify-center sm:h-52 sm:w-52"
+                className="mx-auto mt-5 flex h-48 w-48 items-center justify-center sm:h-56 sm:w-56"
               >
-                <div className="relative h-40 w-40 sm:h-44 sm:w-44">
-                  <motion.div
-                    className="absolute inset-x-0 top-0 mx-auto h-16 w-28 rounded-t-[1.2rem] rounded-b-[0.5rem]"
-                    style={{
-                      background: "linear-gradient(135deg, #FFFDF8 0%, #F8E8EE 70%, #E8D7A5 100%)",
-                      boxShadow: "0 16px 28px rgba(217, 165, 165, 0.18)",
-                    }}
-                    animate={isUnlocked ? { rotate: -18, y: -8 } : { rotate: 0, y: 0 }}
-                    transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                  <motion.div
-                    className="absolute inset-x-0 bottom-0 mx-auto h-28 w-40 rounded-[1.3rem]"
-                    style={{
-                      background: "linear-gradient(180deg, #FFFDF8 0%, #F8E8EE 65%, #E8D7A5 100%)",
-                      boxShadow: "inset 0 -8px 0 rgba(217, 165, 165, 0.2), 0 14px 32px rgba(217, 165, 165, 0.2)",
-                    }}
-                    animate={isUnlocked ? { scale: 1.02, y: 4 } : { scale: 1, y: 0 }}
-                    transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                  <motion.div
-                    className="absolute left-1/2 top-0 h-12 w-3 -translate-x-1/2 rounded-full"
-                    style={{ background: "linear-gradient(180deg, #D9A5A5, #E8D7A5)" }}
-                  />
-                  <motion.div
-                    className="absolute left-1/2 top-6 h-5 w-16 -translate-x-1/2 rounded-full"
-                    style={{ background: "linear-gradient(90deg, #D9A5A5, #F8E8EE, #E8D7A5)" }}
-                  />
-                  <motion.div
-                    className="absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full"
-                    style={{ background: "radial-gradient(circle, rgba(255, 253, 248, 0.95) 0%, rgba(248, 232, 238, 0.8) 60%, rgba(232, 215, 165, 0.15) 100%)" }}
-                    animate={isUnlocked ? { scale: [1, 1.08, 1], opacity: [0.7, 1, 0.7] } : { scale: 1, opacity: 0.92 }}
-                    transition={{ duration: 1.1, repeat: isUnlocked ? Infinity : 0, ease: "easeInOut" }}
-                  />
-                  <motion.div
-                    className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-xl"
-                    animate={isUnlocked ? { opacity: 1, scale: 1.05 } : { opacity: 0.95, scale: 1 }}
-                    transition={{ duration: 0.7 }}
-                  >
-                    💝
-                  </motion.div>
+                <div className="relative h-40 w-40 sm:h-48 sm:w-48">
+                  <div className="absolute inset-x-[6%] top-[18%] h-[18%] rounded-[1.2rem] border border-[#f8e8ee]/80 bg-[linear-gradient(180deg,#fffdf8_0%,#fef8f9_45%,#f3e2e4_100%)] shadow-[0_16px_28px_rgba(217,165,165,0.16)]" />
+                  <div className="absolute inset-x-[11%] top-[34%] h-[16%] rounded-[1.05rem] border border-[#f8e8ee]/80 bg-[linear-gradient(180deg,#fffdf8_0%,#fef8f9_45%,#e8d7a5_100%)] shadow-[0_12px_24px_rgba(217,165,165,0.14)]" />
+                  <div className="absolute inset-x-[4%] bottom-[4%] h-[28%] rounded-[1.35rem] border border-[#f8e8ee]/80 bg-[linear-gradient(180deg,#fffdf8_0%,#fdf9f6_50%,#f5e2e8_100%)] shadow-[0_16px_30px_rgba(217,165,165,0.2)]" />
+
+                  <div className="absolute inset-x-[15%] top-[14%] h-[6%] rounded-full bg-[linear-gradient(90deg,#f6d9df_0%,#f8ebee_45%,#e9cfa7_100%)] opacity-90" />
+                  <div className="absolute inset-x-[9%] top-[26%] h-[4%] rounded-full bg-[linear-gradient(90deg,#f6d9df_0%,#f8ebee_50%,#e9cfa7_100%)] opacity-80" />
+                  <div className="absolute inset-x-[14%] top-[45%] h-[4%] rounded-full bg-[linear-gradient(90deg,#f6d9df_0%,#f8ebee_50%,#e9cfa7_100%)] opacity-70" />
+
+                  <div className="absolute left-[22%] top-[8%] h-[7%] w-[10%] rounded-full bg-[linear-gradient(180deg,#f5d8dd_0%,#e1b0bc_100%)]" />
+                  <div className="absolute right-[22%] top-[7%] h-[7%] w-[10%] rounded-full bg-[linear-gradient(180deg,#f5d8dd_0%,#e1b0bc_100%)]" />
+                  <div className="absolute left-[18%] top-[1%] h-[8%] w-[12%] rounded-full bg-[linear-gradient(180deg,#f5d8dd_0%,#e1b0bc_100%)]" />
+                  <div className="absolute right-[18%] top-[1%] h-[8%] w-[12%] rounded-full bg-[linear-gradient(180deg,#f5d8dd_0%,#e1b0bc_100%)]" />
+
+                  <div className="absolute left-[18%] top-[70%] h-4 w-4 rounded-full bg-[#d9a5a5] shadow-[0_0_10px_rgba(217,165,165,0.25)]" />
+                  <div className="absolute right-[18%] top-[71%] h-4 w-4 rounded-full bg-[#d9a5a5] shadow-[0_0_10px_rgba(217,165,165,0.25)]" />
+                  <div className="absolute left-[50%] top-[72%] h-4 w-4 -translate-x-1/2 rounded-full bg-[#d9a5a5] shadow-[0_0_10px_rgba(217,165,165,0.25)]" />
+
+                  <div className="absolute left-1/2 top-[3%] h-[10%] w-[22%] -translate-x-1/2 rounded-[999px] bg-[linear-gradient(90deg,#f8e8ee_0%,#e8d7a5_100%)] shadow-[0_10px_20px_rgba(217,165,165,0.16)]" />
+                  <div className="absolute left-1/2 top-[16%] h-[8%] w-[18%] -translate-x-1/2 rounded-full bg-[linear-gradient(90deg,#f8e8ee_0%,#e8d7a5_100%)] opacity-70" />
+
+                  <div className="absolute bottom-[12%] left-[8%] h-3 w-3 rounded-full bg-[#d9a5a5] opacity-80" />
+                  <div className="absolute bottom-[14%] right-[8%] h-3 w-3 rounded-full bg-[#e8d7a5] opacity-80" />
+                  <div className="absolute bottom-[19%] left-[50%] h-3 w-3 -translate-x-1/2 rounded-full bg-[#f8e8ee] opacity-80" />
+
+                  <div className="absolute inset-x-[5%] bottom-[3%] h-[4%] rounded-full bg-[#d9a5a5]/25 blur-md" />
+
+                  <div className="absolute left-[50%] top-[2%] flex h-[16%] w-[20%] -translate-x-1/2 items-center justify-center rounded-full bg-[radial-gradient(circle,rgba(255,253,248,0.95)_0%,rgba(248,232,238,0.85)_55%,rgba(232,215,165,0.2)_100%)] shadow-[0_10px_26px_rgba(217,165,165,0.16)]">
+                    <div className="absolute left-1/2 top-[4%] h-5 w-1.5 -translate-x-1/2 rounded-full bg-[linear-gradient(180deg,#d9a5a5_0%,#e8d7a5_100%)]" />
+                    <div className="absolute left-1/2 top-[13%] h-2.5 w-8 -translate-x-1/2 rounded-full bg-[linear-gradient(90deg,#d9a5a5_0%,#f8e8ee_45%,#e8d7a5_100%)]" />
+                  </div>
+
+                  <div className="absolute left-[50%] top-[5%] flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full text-[1.1rem]">
+                    🕯️
+                  </div>
+
+                  <div className="absolute left-[50%] top-[8%] h-7 w-7 -translate-x-1/2 rounded-full border border-white/60 bg-[radial-gradient(circle,rgba(255,248,205,0.95)_0%,rgba(247,208,115,0.72)_60%,rgba(232,171,92,0.25)_100%)] shadow-[0_0_16px_rgba(247,208,115,0.34)]" />
+                  <div className="absolute left-[50%] top-[7.5%] h-4.5 w-4.5 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,248,205,0.9)_0%,rgba(243,178,95,0.6)_45%,rgba(255,255,255,0.15)_100%)]" />
+
+                  <div className="absolute left-[48%] top-[36%] h-3 w-3 -translate-x-1/2 rounded-full bg-[#d9a5a5] shadow-[0_0_10px_rgba(217,165,165,0.2)]" />
+                  <div className="absolute left-[52%] top-[36%] h-3 w-3 -translate-x-1/2 rounded-full bg-[#e8d7a5] shadow-[0_0_10px_rgba(232,215,165,0.2)]" />
+                  <div className="absolute left-[50%] top-[36%] h-4 w-4 -translate-x-1/2 rounded-full bg-[#f8e8ee] shadow-[0_0_10px_rgba(248,232,238,0.2)]" />
+
+                  <div className="absolute inset-x-[16%] bottom-[3%] h-[8%] rounded-full bg-[#f5e2e8]/20 blur-lg" />
                 </div>
               </motion.div>
 

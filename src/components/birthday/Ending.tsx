@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
 import confetti from "canvas-confetti";
-import { DecorativeLayer } from "./Decorations";
+import { DecorativeLayer, SunflowerAccent } from "./Decorations";
 import { config } from "@/lib/birthday-config";
 
 const CONFETTI_COLORS = ["#E8D7A5", "#D9A5A5", "#F8E8EE", "#FFFDF8", "#EDE7F6"];
@@ -45,7 +45,9 @@ export function Ending({ message }: { message: string }) {
         }}
       />
 
-      <DecorativeLayer density="soft" showStars showSparkles showRibbons showFairyLights showBalloons showHearts burstOnEnter className="z-0" />
+      <DecorativeLayer density="soft" showStars showSparkles showRibbons showFairyLights showBalloons showHearts showSunflowers burstOnEnter className="z-0" />
+      <SunflowerAccent className="left-3 top-6 h-10 w-10 opacity-70 sm:left-8 sm:top-10 sm:h-12 sm:w-12" />
+      <SunflowerAccent className="right-3 bottom-6 h-10 w-10 opacity-70 sm:right-8 sm:bottom-10 sm:h-12 sm:w-12" />
 
       {hearts.map((h) => (
         <motion.span

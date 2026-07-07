@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
-import { DecorativeLayer } from "./Decorations";
+import { DecorativeLayer, SunflowerAccent } from "./Decorations";
 
 const CONFETTI_COLORS = ["#E8D7A5", "#D9A5A5", "#F8E8EE", "#FFFDF8", "#EDE7F6"];
 const BALLOON_COLORS = ["#F8E8EE", "#E8D7A5", "#D9A5A5", "#EDE7F6", "#F9F3EA"];
@@ -81,6 +81,7 @@ export function CakeScene({ onDone }: { onDone: () => void }) {
         showSparkles
         showFairyLights
         showStars
+        showSunflowers
         className="z-0"
       />
 
@@ -121,6 +122,9 @@ export function CakeScene({ onDone }: { onDone: () => void }) {
         transition={{ type: "spring", stiffness: 110, damping: 14 }}
         className="relative z-10 mt-12 flex flex-col items-center sm:mt-14"
       >
+        <SunflowerAccent className="-left-8 top-4 hidden h-12 w-12 opacity-80 sm:block" />
+        <SunflowerAccent className="-right-8 top-4 hidden h-12 w-12 opacity-80 sm:block" />
+        <SunflowerAccent className="bottom-2 left-1/2 hidden h-10 w-10 -translate-x-1/2 opacity-70 sm:block" />
         <div className="mb-4 flex gap-6 sm:gap-8">
           {lit.map((on, i) => (
             <div key={i} className="relative flex flex-col items-center">
